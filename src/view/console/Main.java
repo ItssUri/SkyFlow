@@ -55,7 +55,7 @@ public class Main {
         passengers.add(new Passenger("Ellen", "Joe", LocalDate.of(2001, 8, 5), Gender.FEMALE, Nationality.TONGAN, "123987L", "ellenjoe@email.com", "293857193", new Ticket("AMSKL001", false, true, "12")));
         flights.get(0).addPassenger(passengers.get(0));
         Scanner scanner = new Scanner(System.in);
-        scanner.useDelimiter("\n");
+        
         try {
                 System.out.println("Welcome to Skyflow!");
                 Thread.sleep(1000);
