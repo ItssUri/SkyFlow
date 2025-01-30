@@ -21,14 +21,15 @@ import model.data.Nationality;
 import model.data.Operator;
 import model.data.PilotRank;
 import model.data.SeatType;
+import model.exceptions.ExceptionHandler;
+import model.exceptions.NoResultsFound;
+import model.exceptions.WrongFormat;
 import model.transportation.Flight;
 import model.transportation.Passenger;
 import model.transportation.Plane;
 import model.workers.AirportOperator;
 import model.workers.Pilot;
 import model.workers.Stewardess;
-
-import model.utils.ExceptionHandler;
 import model.utils.StringUtils;
 
 public class Main {
@@ -143,7 +144,7 @@ public class Main {
                         }
                     }
                     if (plane == null) {
-                        System.out.println("Plane not found!");
+                        ExceptionHandler.consoleHandle(new NoResultsFound("No Plane Found with Inputted Plane Code"));
                         break;
                     }
                     System.out.print("Pilot Id: ");
@@ -155,7 +156,7 @@ public class Main {
                         }
                     }
                     if (pilot == null) {
-                        System.out.println("Pilot not found!");
+                        ExceptionHandler.consoleHandle(new NoResultsFound("No Pilot Found with Inputted Pilot ID"));
                         break;
                     }
                     System.out.print("Origin Airport Code: ");
@@ -164,7 +165,13 @@ public class Main {
                     Airport destination = Airport.valueOf(StringUtils.enumFormat(scanner.next()));
                     System.out.print("Enter the date and time of departure (dd/MM/yyyy HH:mm): ");
                     String dateTimeInput = scanner.next();
-                    LocalDateTime scheduledDeparture = LocalDateTime.parse(dateTimeInput, DTF_DATE_TIME);
+                    LocalDateTime scheduledDeparture = null;
+                    try {
+                        scheduledDeparture = LocalDateTime.parse(dateTimeInput, DTF_DATE_TIME);
+                    } catch (Exception e) {
+                        ExceptionHandler.consoleHandle(new WrongFormat("Wrong format with date or time, it must be: 'dd/MM/yyyy HH:mm'"));
+                    }
+                    
                     System.out.print("Flight time (h): ");
                     Double flightTime  = scanner.nextDouble();
                     FlightStatus status = FlightStatus.SCHEDULED;
@@ -201,7 +208,7 @@ public class Main {
                         }
                     }
                     if (!removed) {
-                        System.out.println("No flight found with code: " + codeToDelete);
+                        ExceptionHandler.consoleHandle(new NoResultsFound("No flight found with Code: " + codeToDelete));
                     }
                     break;
                 case 4:
@@ -256,7 +263,12 @@ public class Main {
                     System.out.print("Passenger surnames: ");
                     String surnames = scanner.next();
                     System.out.print("(dd/MM/yyyy) Passenger birth date: ");
-                    LocalDate birthDate = LocalDate.parse(scanner.next(),DTF);
+                    LocalDate birthDate = null;
+                    try {
+                        birthDate = LocalDate.parse(scanner.next(),DTF);
+                    } catch (Exception e) {
+                        ExceptionHandler.consoleHandle(new WrongFormat("Wrong format with date or time, it must be: 'dd/MM/yyyy HH:mm'"));
+                    }
                     System.out.print("Passenger gender: ");
                     String gender = scanner.next();
                     System.out.print("Passenger nationality: ");
@@ -304,7 +316,7 @@ public class Main {
                         }
                     }
                     if (!removed) {
-                        System.out.println("No passenger found with ID: " + idToDelete);
+                        ExceptionHandler.consoleHandle(new NoResultsFound("No passenger found with ID: " + idToDelete));
                     }
                     break;
                 
@@ -320,7 +332,7 @@ public class Main {
                         }
                     }
                     if (passengerSeat == null) {
-                        System.out.println("No passenger found with that ID!");
+                        ExceptionHandler.consoleHandle(new NoResultsFound("No Passenger found with ID: " + idToConfirm));
                         break;
                     }
                     for (Flight flight : flights) {
@@ -403,7 +415,7 @@ public class Main {
                         }
                     }
                     if (!removed) {
-                        System.out.println("No plane found with code: " + codeToDelete);
+                        ExceptionHandler.consoleHandle(new NoResultsFound("No Plane found with Code: " + codeToDelete));
                     }
                     break;
                 case 4:
@@ -450,7 +462,12 @@ public class Main {
                     System.out.print("Operator surnames: ");
                     String surnames = scanner.next();
                     System.out.print("(dd/MM/yyyy) Operator birth date: ");
-                    LocalDate birthDate = LocalDate.parse(scanner.next(),DTF);
+                    LocalDate birthDate = null;
+                    try {
+                        birthDate = LocalDate.parse(scanner.next(),DTF);
+                    } catch (Exception e) {
+                        ExceptionHandler.consoleHandle(new WrongFormat("Wrong format with date or time, it must be: 'dd/MM/yyyy HH:mm'"));
+                    }
                     System.out.print("Operator gender: ");
                     String gender = scanner.next();
                     System.out.print("Operator nationality: ");
@@ -504,7 +521,7 @@ public class Main {
                         }
                     }
                     if (!removed) {
-                        System.out.println("No operator found with ID: " + idToDelete);
+                        ExceptionHandler.consoleHandle(new NoResultsFound("No Operator found with ID: " + idToDelete));
                     }
                     break;
                 case 4:
@@ -547,7 +564,12 @@ public class Main {
                     System.out.print("Pilot surnames: ");
                     String surnames = scanner.next();
                     System.out.print("(dd/MM/yyyy) Pilot birth date: ");
-                    LocalDate birthDate = LocalDate.parse(scanner.next(),DTF);
+                    LocalDate birthDate = null;
+                    try {
+                        birthDate = LocalDate.parse(scanner.next(),DTF);
+                    } catch (Exception e) {
+                        ExceptionHandler.consoleHandle(new WrongFormat("Wrong format with date or time, it must be: 'dd/MM/yyyy HH:mm'"));
+                    }
                     System.out.print("Pilot gender: ");
                     String gender = scanner.next();
                     System.out.print("Pilot nationality: ");
@@ -596,7 +618,7 @@ public class Main {
                         }
                     }
                     if (!removed) {
-                        System.out.println("No pilot found with ID: " + idToDelete);
+                        ExceptionHandler.consoleHandle(new NoResultsFound("No Pilot found with ID: " + idToDelete));
                     }
                     break;
                 case 4:
@@ -639,7 +661,12 @@ public class Main {
                     System.out.print("Stewardess surnames: ");
                     String surnames = scanner.next();
                     System.out.print("(dd/MM/yyyy) Stewardess birth date: ");
-                    LocalDate birthDate = LocalDate.parse(scanner.next(),DTF);
+                    LocalDate birthDate = null;
+                    try {
+                        birthDate = LocalDate.parse(scanner.next(),DTF);
+                    } catch (Exception e) {
+                        ExceptionHandler.consoleHandle(new WrongFormat("Wrong format with date or time, it must be: 'dd/MM/yyyy HH:mm'"));
+                    }
                     System.out.print("Stewardess gender: ");
                     String gender = scanner.next();
                     System.out.print("Stewardess nationality: ");
@@ -691,7 +718,7 @@ public class Main {
                         }
                     }
                     if (!removed) {
-                        System.out.println("No Stewardess found with ID: " + idToDelete);
+                        ExceptionHandler.consoleHandle(new NoResultsFound("No Stewardess found with ID: " + idToDelete));
                     }
                     break;
                 case 4:
