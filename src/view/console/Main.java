@@ -22,6 +22,7 @@ import model.data.Operator;
 import model.data.PilotRank;
 import model.data.SeatType;
 import model.exceptions.ExceptionHandler;
+import model.exceptions.InvalidIdException;
 import model.exceptions.NoResultsFound;
 import model.exceptions.WrongFormat;
 import model.transportation.Flight;
@@ -287,7 +288,13 @@ public class Main {
                     String seatNumber = scanner.next();
                     Ticket ticket = new Ticket(ticketCode, hasCheckedBaggage, handbag, seatNumber);
                     Passenger passenger = new Passenger(name, surnames, birthDate, Gender.valueOf(StringUtils.enumFormat(gender)), Nationality.valueOf(StringUtils.enumFormat(nationality)), id, email, seatNumber, ticket);
-                    passengers.add(passenger);
+                    boolean isValidId = passenger.checkId();
+                    if (isValidId) {
+                        passengers.add(passenger);
+                    } else {
+                        ExceptionHandler.consoleHandle(new InvalidIdException("Passenger " + surnames + ", " + name + " detected to have an invalid ID."));
+                    }
+                    
                     break;
                 case 2:
                     System.out.println("Listing all Passengers...");
