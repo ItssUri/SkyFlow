@@ -23,6 +23,7 @@ import model.data.PilotRank;
 import model.data.SeatType;
 import model.exceptions.ExceptionHandler;
 import model.exceptions.InvalidIdException;
+import model.exceptions.NoPrefixFound;
 import model.exceptions.NoResultsFound;
 import model.exceptions.WrongFormat;
 import model.transportation.Flight;
@@ -484,7 +485,12 @@ public class Main {
                     System.out.print("Operator email: ");
                     String email = scanner.next();
                     System.out.print("Operator phone number: ");
-                    String phoneNumber = scanner.next();
+                    String phoneNumber = null;
+                    try {
+                        phoneNumber = scanner.next();
+                    } catch (Exception e) {
+                        ExceptionHandler.consoleHandle(new NoPrefixFound("You must set a prefix before the phone number ex:'+34 123123123'"));
+                    }
                     System.out.print("Operator worker code: ");
                     String workerCode = scanner.next();
                     System.out.print("Operator worked hours: ");
@@ -586,7 +592,12 @@ public class Main {
                     System.out.print("Pilot email: ");
                     String email = scanner.next();
                     System.out.print("Pilot phone number: ");
-                    String phoneNumber = scanner.next();
+                    String phoneNumber = null;
+                    try {
+                        phoneNumber = scanner.next();
+                    } catch (Exception e) {
+                        ExceptionHandler.consoleHandle(new NoPrefixFound("You must set a prefix before the phone number ex:'+34 123123123'"));
+                    }
                     System.out.print("Pilot worker code: ");
                     String workerCode = scanner.next();
                     System.out.print("Pilot worked hours: ");
@@ -683,7 +694,12 @@ public class Main {
                     System.out.print("Stewardess email: ");
                     String email = scanner.next();
                     System.out.print("Stewardess phone number: ");
-                    String phoneNumber = scanner.next();
+                    String phoneNumber = null;
+                    try {
+                        phoneNumber = scanner.next();
+                    } catch (Exception e) {
+                        ExceptionHandler.consoleHandle(new NoPrefixFound("You must set a prefix before the phone number ex:'+34 123123123'"));
+                    }
                     System.out.print("Stewardess worker code: ");
                     String workerCode = scanner.next();
                     System.out.print("Stewardess worked hours: ");
