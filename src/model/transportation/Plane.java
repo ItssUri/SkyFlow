@@ -2,10 +2,10 @@ package model.transportation;
 
 import java.time.Year;
 import java.util.ArrayList;
+import model.auxiliary.Seat;
 import model.data.EngineType;
 import model.data.Model;
 import model.data.SeatType;
-import model.auxiliary.Seat;
 
 public class Plane {
     private Year manufactureYear;
@@ -117,20 +117,20 @@ public class Plane {
 
     @Override
     public String toString() {
-        return String.format(
-            "Plane Details:\n" +
-            "+-------------------+------------------+\n" +
-            "| Attribute         | Value            |\n" +
-            "+-------------------+------------------+\n" +
-            "| Manufacture Year  | %-16s |\n" +
-            "| Model             | %-16s |\n" +
-            "| Seats             | %-16s |\n" +
-            "| Tank Capacity (L) | %-16s |\n" +
-            "| Engine Type       | %-16s |\n" +
-            "| Capacity          | %-16s |\n" +
-            "| Top Speed (km/h)  | %-16s |\n" +
-            "| Plane Code        | %-16s |\n" +
-            "+-------------------+------------------+",
+        return String.format("""
+                             Plane Details:
+                             +-------------------+------------------+
+                             | Attribute         | Value            |
+                             +-------------------+------------------+
+                             | Manufacture Year  | %-16s |
+                             | Model             | %-16s |
+                             | Seats             | %-16s |
+                             | Tank Capacity (L) | %-16s |
+                             | Engine Type       | %-16s |
+                             | Capacity          | %-16s |
+                             | Top Speed (km/h)  | %-16s |
+                             | Plane Code        | %-16s |
+                             +-------------------+------------------+""",
             String.valueOf(manufactureYear), 
             String.valueOf(model), 
             String.valueOf(seats.size()), 

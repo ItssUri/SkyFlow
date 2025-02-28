@@ -4,7 +4,6 @@ import java.util.InputMismatchException;
 import model.debug.Config;
 
 public class ExceptionHandler {
-  Config debugConfig = new Config();
   static final boolean DEBUG_MODE = Config.DEBUG_MODE;
 
   /**

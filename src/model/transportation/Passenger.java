@@ -1,13 +1,12 @@
 package model.transportation;
 
 import java.time.LocalDate;
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
-
+import java.util.regex.Pattern;
+import model.abstracts.Human;
 import model.auxiliary.Ticket;
 import model.data.Gender;
 import model.data.Nationality;
-import model.abstracts.Human;
 
 public class Passenger extends Human{
     private Ticket ticket;
@@ -36,19 +35,13 @@ public class Passenger extends Human{
         boolean CIF_matchFound = CIF_MATCHER.find();
         Matcher NIE_MATCHER = NIE_REGEX.matcher(this.getId());
         boolean NIE_matchFound = NIE_MATCHER.find();
-        if (DNI_matchFound || CIF_matchFound || NIE_matchFound) {
-            return true;
-        }
-        return false;
+        return DNI_matchFound || CIF_matchFound || NIE_matchFound;
     }
 
     public boolean checkBoardingPass(){ //AB123456
         final Pattern PASS_REGEX = Pattern.compile("^[A-Z]{2}\\d{6}$",Pattern.CASE_INSENSITIVE);
         Matcher passMatcher = PASS_REGEX.matcher(this.ticket.getFlightCode());
-        if (passMatcher.find()) {
-            return true;
-        }
-        return false;
+        return passMatcher.find();
     }
 
 

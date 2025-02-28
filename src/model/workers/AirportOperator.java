@@ -2,7 +2,6 @@ package model.workers;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-
 import model.abstracts.Worker;
 import model.data.Gender;
 import model.data.Nationality;
@@ -61,35 +60,63 @@ public class AirportOperator extends Worker implements model.interfaces.IsWorker
         double overtimeHours = Math.max(getWorkedHours() - 40.0, 0.0);
         LocalDate today = LocalDate.now();
         StringBuilder sb = new StringBuilder();
-        sb.append("\n\u001B[35m[OPERATOR PAYSHEET]\n")
-        .append("Name: " + getSurnames() +", " + getName()+"\n")
+        sb.append("\n\u001B[35m[OPERATOR PAYSHEET]\n").append("Name: ").append(getSurnames()).append(", ").append(getName())
+        .append("\n")
         .append("Position: Airport Operator\n")
         .append("\nWork Details:\n")
-        .append(" Total Hours Worked: " + getWorkedHours() + " hours\n")
-        .append(" Regular Hours: " + standardHours + " hours\n")
-        .append(" Overtime Hours: " + overtimeHours + " hours\n")
+        .append(" Total Hours Worked: ")
+        .append(getWorkedHours())
+        .append(" hours\n")
+        .append(" Regular Hours: ")
+        .append(standardHours)
+        .append(" hours\n")
+        .append(" Overtime Hours: ")
+        .append(overtimeHours)
+        .append(" hours\n")
         .append("\nEarnings:")
-        .append("\n Base Pay: " + HOURLY_RATE+"eur/hour x " + standardHours + " = "+(HOURLY_RATE*standardHours) + "eur")
-        .append("\n Overtime Pay: (" + HOURLY_RATE+"eur/hour * " + OVERTIME_RATE + "eur Hourly Rate Bonus) = eur"+(overtimeHours * HOURLY_RATE * OVERTIME_RATE))
-        .append("\n Gross Pay: " + calculateSalary()+"eur")
+        .append("\n Base Pay: ")
+        .append(HOURLY_RATE)
+        .append("eur/hour x ")
+        .append(standardHours)
+        .append(" = ")
+        .append(HOURLY_RATE*standardHours)
+        .append("eur")
+        .append("\n Overtime Pay: (")
+        .append(HOURLY_RATE)
+        .append("eur/hour * ")
+        .append(OVERTIME_RATE)
+        .append("eur Hourly Rate Bonus) = eur")
+        .append(overtimeHours * HOURLY_RATE * OVERTIME_RATE)
+        .append("\n Gross Pay: ")
+        .append(calculateSalary())
+        .append("eur")
         .append("\n\nDeductions:")
-        .append("\n Income Tax (IRPF, 20%): " + calculateSalary()*0.2+"eur")
-        .append("\n Social Security (6.35%): " + calculateSalary()*0.0635+"eur")
-        .append("\n Total Deduction: " + calculateSalary()*0.2635+"eur")
-        .append("\n\nNet Pay: " + calculateSalary()*0.7365+"eur\n")
+        .append("\n Income Tax (IRPF, 20%): ")
+        .append(calculateSalary()*0.2)
+        .append("eur")
+        .append("\n Social Security (6.35%): ")
+        .append(calculateSalary()*0.0635)
+        .append("eur")
+        .append("\n Total Deduction: ")
+        .append(calculateSalary()*0.2635)
+        .append("eur")
+        .append("\n\nNet Pay: ")
+        .append(calculateSalary()*0.7365)
+        .append("eur\n")
         .append("Authorized By: Carmen Quintás, Josep Tarradellas Barcelona-El Prat Airport CEO.\n")
-        .append("Date: " + today.toString()+"\u001B[0m\n");
+        .append("Date: ")
+        .append(today.toString())
+        .append("\u001B[0m\n");
         return sb.toString();
     }
     @Override
     public String toString() {
-        return String.format(
-            "%s" + 
-            "+--------------------+------------------------------+\n" +
-            "| Operator Charg     | %-28s |\n" +
-            "| Start Time         | %-28s |\n" +
-            "| End Time           | %-28s |\n" +
-            "+--------------------+------------------------------+",
+        return String.format("""
+                             %s+--------------------+------------------------------+
+                             | Operator Charg     | %-28s |
+                             | Start Time         | %-28s |
+                             | End Time           | %-28s |
+                             +--------------------+------------------------------+""",
             super.toString(), 
             String.valueOf(operatorCharge),
             String.valueOf(startTime),

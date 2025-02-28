@@ -39,13 +39,13 @@ public class Ticket {
     }
     @Override
     public String toString() {
-        return String.format(
-            "\n" +
-            "| Ticket Code        | %-28s |\n" +
-            "| Checked Baggage    | %-28s |\n" +
-            "| Handbag            | %-28s |\n" +
-            "| Seat Number        | %-28s |\n" +
-            "+--------------------+------------------------------+",
+        return String.format("""
+                             
+                             | Ticket Code        | %-28s |
+                             | Checked Baggage    | %-28s |
+                             | Handbag            | %-28s |
+                             | Seat Number        | %-28s |
+                             +--------------------+------------------------------+""",
             String.valueOf(flightCode),
             String.valueOf(hasCheckedBaggage),
             String.valueOf(handbag),

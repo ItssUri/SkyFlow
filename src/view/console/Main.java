@@ -1,15 +1,13 @@
 package view.console;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.lang.Thread;
 import java.util.Scanner;
-
-import model.abstracts.Worker;
 import model.auxiliary.Seat;
 import model.auxiliary.Ticket;
 import model.data.Airport;
@@ -29,10 +27,10 @@ import model.exceptions.WrongFormat;
 import model.transportation.Flight;
 import model.transportation.Passenger;
 import model.transportation.Plane;
+import model.utils.StringUtils;
 import model.workers.AirportOperator;
 import model.workers.Pilot;
 import model.workers.Stewardess;
-import model.utils.StringUtils;
 
 public class Main {
     static ArrayList<Plane> planes = new ArrayList<>();
@@ -40,12 +38,11 @@ public class Main {
     static ArrayList<Flight> flights= new ArrayList<>();
     static ArrayList<AirportOperator> operators= new ArrayList<>();
     static ArrayList<Stewardess> stewardesses= new ArrayList<>();
-    static ArrayList<Worker> workers= new ArrayList<>();
+    //static ArrayList<Worker> workers= new ArrayList<>();
     static ArrayList<Passenger> passengers = new ArrayList<>();
     
     static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     static final DateTimeFormatter DTF_DATE_TIME = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-    static final DateTimeFormatter DTF_TIME = DateTimeFormatter.ofPattern("HH:mm");
 
     public static void main(String[] args) {
         try{
@@ -57,61 +54,44 @@ public class Main {
         stewardesses.add(new Stewardess("Jane", "Doe", LocalDate.of(1985, 11, 25), Gender.FEMALE, Nationality.BRUNEIAN, "JDOE123", "jane.doe@email.cocm", "12389312231", "jd123", 39, 130, 50));
         passengers.add(new Passenger("Ellen", "Joe", LocalDate.of(2001, 8, 5), Gender.FEMALE, Nationality.TONGAN, "123987L", "ellenjoe@email.com", "293857193", new Ticket("AMSKL001", false, true, "12")));
         flights.get(0).addPassenger(passengers.get(0));
-        Scanner scanner = new Scanner(System.in);
-        
-        try {
+        try (Scanner scanner = new Scanner(System.in)) {
+            try {
                 System.out.println("Welcome to Skyflow!");
                 Thread.sleep(1000);
                 System.out.print("\033[H\033[2J");
                 System.out.flush();
-        } catch (Exception e) {
-            ExceptionHandler.consoleHandle(e);
-        }
-        boolean running = true;
-
-        while (running) {
-            System.out.println("Main Menu:");
-            System.out.println("1. Flights");
-            System.out.println("2. Passengers");
-            System.out.println("3. Planes");
-            System.out.println("4. Airport operators");
-            System.out.println("5. Pilots");
-            System.out.println("6. Stewardesses");
-            System.out.println("0. Exit");
-
-            System.out.print("Enter your choice: ");
-            String choice = scanner.next();
-
-            switch (choice) {
-                case "1":
-                    handleFlights(scanner);
-                    break;
-                case "2":
-                    handlePassengers(scanner);
-                    break;
-                case "3":
-                    handlePlanes(scanner);
-                    break;
-                case "4":
-                    handleAirportOperators(scanner);
-                    break;
-                case "5":
-                    handlePilots(scanner);
-                    break;
-                case "6":
-                    handleStewardesses(scanner);
-                    break;
-                case "0":
-                    System.out.println("Thanks for using SkyFlow!");
-                    running = false;
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
+            } catch (InterruptedException e) {
+                ExceptionHandler.consoleHandle(e);
             }
-        }
-
-        scanner.close();
-    }
+            boolean running = true;
+            while (running) {
+                System.out.println("Main Menu:");
+                System.out.println("1. Flights");
+                System.out.println("2. Passengers");
+                System.out.println("3. Planes");
+                System.out.println("4. Airport operators");
+                System.out.println("5. Pilots");
+                System.out.println("6. Stewardesses");
+                System.out.println("0. Exit");
+                
+                System.out.print("Enter your choice: ");
+                String choice = scanner.next();
+                
+                switch (choice) {
+                    case "1" -> handleFlights(scanner);
+                    case "2" -> handlePassengers(scanner);
+                    case "3" -> handlePlanes(scanner);
+                    case "4" -> handleAirportOperators(scanner);
+                    case "5" -> handlePilots(scanner);
+                    case "6" -> handleStewardesses(scanner);
+                    case "0" -> {
+                        System.out.println("Thanks for using SkyFlow!");
+                        running = false;
+                    }
+                    default -> System.out.println("Invalid choice. Please try again.");
+                }
+            }
+        }    }
     catch (Exception e) {
         ExceptionHandler.consoleHandle(e);
     }
@@ -133,7 +113,7 @@ public class Main {
             int subChoice = scanner.nextInt();
 
             switch (subChoice) {
-                case 1:
+                case 1 -> {
                     System.out.println("Creating a new Flight...");
                     System.out.print("Flight Operator: ");
                     Operator _operator = Operator.valueOf(StringUtils.enumFormat(scanner.next()));
@@ -182,8 +162,8 @@ public class Main {
                     Flight flight = new Flight(_operator, plane, pilot, origin, destination, scheduledDeparture, flightTime, status, flightCode);
                     flights.add(flight);
                     System.out.println("Flight Added!");
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     System.out.println("Listing all flights...");
                     for (Flight f : flights) {
                         System.out.println(f.toString() + "\n");
@@ -192,11 +172,12 @@ public class Main {
                     try {
                         System.in.read();
                         scanner.nextLine();
-                    } catch (Exception e) {
+                    } catch (IOException e) {
                         ExceptionHandler.consoleHandle(e);
                     }
-                    break;
-                case 3:
+                }
+
+                case 3 -> {
                     System.out.print("\nEnter the flight code: ");
                     String codeToDelete = scanner.next();
                     Iterator<Flight> iterator = flights.iterator();
@@ -212,8 +193,8 @@ public class Main {
                     if (!removed) {
                         ExceptionHandler.consoleHandle(new NoResultsFound("No flight found with Code: " + codeToDelete));
                     }
-                    break;
-                case 4:
+                }
+                case 4 -> {
                     System.out.print("\nEnter the flight code: ");
                     String flightToCheck = scanner.next();
                     for (Flight f : flights) {
@@ -221,8 +202,8 @@ public class Main {
                             System.out.println(f.generateFlightReport());
                         }
                     }
-                    break;
-                case 5:
+                }
+                case 5 -> {
                     System.out.print("\nEnter the flight code: ");
                     String passengerCheck = scanner.next();
                     for (Flight f : flights) {
@@ -233,12 +214,9 @@ public class Main {
                             }
                         }
                     }
-                    break;
-                case 0:
-                    subMenuRunning = false;
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
+                }
+                case 0 -> subMenuRunning = false;
+                default -> System.out.println("Invalid choice. Please try again.");
             }
         }
     }
@@ -258,7 +236,7 @@ public class Main {
             int subChoice = scanner.nextInt();
 
             switch (subChoice) {
-                case 1:
+                case 1 -> {
                     System.out.println("Creating a new Passenger...");
                     System.out.print("Passenger name: ");
                     String name = scanner.next();
@@ -295,9 +273,8 @@ public class Main {
                     } else {
                         ExceptionHandler.consoleHandle(new InvalidIdException("Passenger " + surnames + ", " + name + " detected to have an invalid ID."));
                     }
-                    
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     System.out.println("Listing all Passengers...");
                     for (Passenger p : passengers) {
                         System.out.println(p.toString() + "\n");
@@ -306,11 +283,11 @@ public class Main {
                     try {
                         System.in.read();
                         scanner.nextLine();
-                    } catch (Exception e) {
+                    } catch (IOException e) {
                         ExceptionHandler.consoleHandle(e);
                     }
-                    break;
-                case 3:
+                }
+                case 3 -> {
                     System.out.print("\nEnter the passenger's ID: ");
                     String idToDelete = scanner.next();
                     Iterator<Passenger> iterator = passengers.iterator();
@@ -326,9 +303,9 @@ public class Main {
                     if (!removed) {
                         ExceptionHandler.consoleHandle(new NoResultsFound("No passenger found with ID: " + idToDelete));
                     }
-                    break;
+                }
                 
-                case 4:
+                case 4 -> {
                     System.out.print("\nEnter the passenger's ID: ");
                     String idToConfirm = scanner.next();
                     String passengerSeat = null;
@@ -353,12 +330,9 @@ public class Main {
                             }
                         }
                     }
-                    break;
-                case 0:
-                    subMenuRunning = false;
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
+                }
+                case 0 -> subMenuRunning = false;
+                default -> System.out.println("Invalid choice. Please try again.");
             }
         }
     }
@@ -378,7 +352,7 @@ public class Main {
             int subChoice = scanner.nextInt();
 
             switch (subChoice) {
-                case 1:
+                case 1 -> {
                     System.out.println("Creating a new Plane...");
                     System.out.print("Plane model: ");
                     String planeModel = scanner.next();
@@ -395,8 +369,8 @@ public class Main {
                     Plane plane = new Plane(Model.valueOf(StringUtils.enumFormat(planeModel)), tankCapacity, EngineType.valueOf(StringUtils.enumFormat(engineType)), capacity, topSpeed, planeCode);
                     planes.add(plane);
                     System.out.println("Plane added!");
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     System.out.println("Listing all planes...");
                     for (Plane p : planes) {
                         System.out.println(p.toString() + "\n");
@@ -405,11 +379,12 @@ public class Main {
                     try {
                         System.in.read();
                         scanner.nextLine();
-                    } catch (Exception e) {
+                    } catch (IOException e) {
                         ExceptionHandler.consoleHandle(e);
                     }
-                    break;
-                case 3:
+                }
+
+                case 3 -> {
                     System.out.print("\nEnter the Plane Code: ");
                     String codeToDelete = scanner.next();
                     Iterator<Plane> iterator = planes.iterator();
@@ -425,8 +400,8 @@ public class Main {
                     if (!removed) {
                         ExceptionHandler.consoleHandle(new NoResultsFound("No Plane found with Code: " + codeToDelete));
                     }
-                    break;
-                case 4:
+                }
+                case 4 -> {
                     System.out.print("\nEnter the Plane Code: ");
                     String planeCheckSeats = scanner.next();
                     for (Plane ps : planes) {
@@ -438,12 +413,9 @@ public class Main {
                             System.out.println("First Class Seats: " + String.valueOf(planeSeats.stream().filter( Seat -> Seat.getSeatType() == SeatType.FIRST_CLASS).count()));
                         }
                     }
-                    break;
-                case 0:
-                    subMenuRunning = false;
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
+                }
+                case 0 -> subMenuRunning = false;
+                default -> System.out.println("Invalid choice. Please try again.");
             }
         }
     }
@@ -463,7 +435,7 @@ public class Main {
             int subChoice = scanner.nextInt();
 
             switch (subChoice) {
-                case 1:
+                case 1 -> {
                     System.out.println("Creating a new Airport Operator...");
                     System.out.print("Operator name: ");
                     String name = scanner.next();
@@ -506,8 +478,8 @@ public class Main {
                     AirportOperator operator = new AirportOperator(name, surnames, birthDate, Gender.valueOf(StringUtils.enumFormat(gender)), Nationality.valueOf(StringUtils.enumFormat(nationality)), id, email, phoneNumber, workerCode, workedHours, salary, operatorCharge, shiftStart, shiftEnd);
                     operators.add(operator);
                     System.out.println("Operator added!");
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     System.out.println("Listing all Airport operators...");
                     for (AirportOperator a : operators) {
                         System.out.println(a.toString() + "\n");
@@ -516,11 +488,12 @@ public class Main {
                     try {
                         System.in.read();
                         scanner.nextLine();
-                    } catch (Exception e) {
+                    } catch (IOException e) {
                         ExceptionHandler.consoleHandle(e);
                     }
-                    break;
-                case 3:
+                }
+
+                case 3 -> {
                     System.out.print("\nEnter the operator's ID: ");
                     String idToDelete = scanner.next();
                     Iterator<AirportOperator> iterator = operators.iterator();
@@ -536,8 +509,8 @@ public class Main {
                     if (!removed) {
                         ExceptionHandler.consoleHandle(new NoResultsFound("No Operator found with ID: " + idToDelete));
                     }
-                    break;
-                case 4:
+                }
+                case 4 -> {
                     System.out.print("\nEnter the Operator's ID: ");
                     String payid = scanner.next();
                     for (AirportOperator opts : operators) {
@@ -545,12 +518,9 @@ public class Main {
                             System.out.println(opts.generatePaysheet());
                         }
                     }
-                    break;
-                case 0:
-                    subMenuRunning = false;
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
+                }
+                case 0 -> subMenuRunning = false;
+                default -> System.out.println("Invalid choice. Please try again.");
             }
         }
     }
@@ -570,7 +540,7 @@ public class Main {
             int subChoice = scanner.nextInt();
 
             switch (subChoice) {
-                case 1:
+                case 1 -> {
                     System.out.println("Creating a new Pilot...");
                     System.out.print("Pilot name: ");
                     String name = scanner.next();
@@ -608,8 +578,8 @@ public class Main {
                     String pilotRank = scanner.next();
                     Pilot _pilot = new Pilot(name, surnames, birthDate, Gender.valueOf(StringUtils.enumFormat(gender)),Nationality.valueOf(StringUtils.enumFormat(nationality)), id, email, phoneNumber, workerCode, workedHours, salary, PilotRank.valueOf(StringUtils.enumFormat(pilotRank)));
                     pilots.add(_pilot);
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     System.out.println("Listing all pilots...");
                     for (Pilot p : pilots) {
                         System.out.println(p.toString() + "\n");
@@ -618,11 +588,11 @@ public class Main {
                     try {
                         System.in.read();
                         scanner.nextLine();
-                    } catch (Exception e) {
+                    } catch (IOException e) {
                         ExceptionHandler.consoleHandle(e);
                     }
-                    break;
-                case 3:
+                }
+                case 3 -> {
                     System.out.print("\nEnter the pilot's ID: ");
                     String idToDelete = scanner.next();
                     Iterator<Pilot> iterator = pilots.iterator();
@@ -638,8 +608,8 @@ public class Main {
                     if (!removed) {
                         ExceptionHandler.consoleHandle(new NoResultsFound("No Pilot found with ID: " + idToDelete));
                     }
-                    break;
-                case 4:
+                }
+                case 4 -> {
                     System.out.print("\nEnter the Pilot's ID: ");
                     String payid = scanner.next();
                     for (Pilot pts : pilots) {
@@ -647,12 +617,9 @@ public class Main {
                             System.out.println(pts.generatePaysheet());
                         }
                     }
-                    break;
-                case 0:
-                    subMenuRunning = false;
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
+                }
+                case 0 -> subMenuRunning = false;
+                default -> System.out.println("Invalid choice. Please try again.");
             }
         }
     }
@@ -672,7 +639,7 @@ public class Main {
             int subChoice = scanner.nextInt();
 
             switch (subChoice) {
-                case 1:
+                case 1 -> {
                     System.out.println("Creating a new Stewardess...");
                     System.out.print("Stewardess name: ");
                     String name = scanner.next();
@@ -713,8 +680,8 @@ public class Main {
                     Stewardess _swd = new Stewardess(name,surnames,birthDate,Gender.valueOf(StringUtils.enumFormat(gender)),Nationality.valueOf(StringUtils.enumFormat(nationality)),id,email,phoneNumber,workerCode,workedHours,salary,height,weight);
                     stewardesses.add(_swd);
                     System.out.println("Stewardess added!");
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     System.out.println("Listing all stewardesses...");
                     for (Stewardess s : stewardesses) {
                         System.out.println(s.toString() + "\n");
@@ -723,11 +690,12 @@ public class Main {
                     try {
                         System.in.read();
                         scanner.nextLine();
-                    } catch (Exception e) {
+                    } catch (IOException e) {
                         ExceptionHandler.consoleHandle(e);
                     }
-                    break;
-                case 3:
+                }
+
+                case 3 -> {
                     System.out.print("\nEnter the Stewardess's ID: ");
                     String idToDelete = scanner.next();
                     Iterator<Stewardess> iterator = stewardesses.iterator();
@@ -743,8 +711,8 @@ public class Main {
                     if (!removed) {
                         ExceptionHandler.consoleHandle(new NoResultsFound("No Stewardess found with ID: " + idToDelete));
                     }
-                    break;
-                case 4:
+                }
+                case 4 -> {
                     System.out.print("\nEnter the Stewardess's ID: ");
                     String stwid = scanner.next();
                     for (Stewardess stw : stewardesses) {
@@ -752,12 +720,9 @@ public class Main {
                             System.out.println(stw.generatePaysheet());
                         }
                     }
-                    break;
-                case 0:
-                    subMenuRunning = false;
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
+                }
+                case 0 -> subMenuRunning = false;
+                default -> System.out.println("Invalid choice. Please try again.");
             }
         }
     }

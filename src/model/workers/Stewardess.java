@@ -2,7 +2,6 @@ package model.workers;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
-
 import model.abstracts.Worker;
 import model.data.Gender;
 import model.data.Nationality;
@@ -55,30 +54,34 @@ public class Stewardess extends Worker implements model.interfaces.IsWorker {
         LocalDate today = LocalDate.now();
         StringBuilder sb = new StringBuilder();
         sb.append("\n\u001B[35m[STEWARDESS PAYSHEET]\n")
-        .append("Name: " + getSurnames() +", " + getName()+"\n")
-        .append("Position: Sterwardess\n")
-        .append("\nWork Details:\n")
-        .append("  Total Hours Worked: " + getWorkedHours() + " hours\n")
-        .append("\nEarnings:")
-        .append("\n  Gross Pay: " + calculateSalary()+"eur")
-        .append("\n\nDeductions:")
-        .append("\n  Income Tax (IRPF, 20%): " + calculateSalary()*0.2+"eur")
-        .append("\n  Social Security (6.35%): " + calculateSalary()*0.0635+"eur")
-        .append("\n  Total Deduction: " + calculateSalary()*0.2635+"eur")
-        .append("\n\nNet Pay: " + df.format(calculateSalary()*0.7365)+"eur")
-        .append("\nAuthorized By: Carmen Quintás, Josep Tarradellas Barcelona-El Prat Airport CEO.\n")
-        .append("Date: " + today.toString()+"\u001B[0m\n");
+        .append("Name: ").append(getSurnames()).append(", ").append(getName()).append("\n")
+        .append("Position: Stewardess\n\n")
+      
+        .append("Work Details:\n")
+        .append("  Total Hours Worked: ").append(getWorkedHours()).append(" hours\n\n")
+      
+        .append("Earnings:\n")
+        .append("  Gross Pay: ").append(calculateSalary()).append("eur\n\n")
+      
+        .append("Deductions:\n")
+        .append("  Income Tax (IRPF, 20%): ").append(calculateSalary() * 0.2).append("eur\n")
+        .append("  Social Security (6.35%): ").append(calculateSalary() * 0.0635).append("eur\n")
+        .append("  Total Deduction: ").append(calculateSalary() * 0.2635).append("eur\n\n")
+      
+        .append("Net Pay: ").append(df.format(calculateSalary() * 0.7365)).append("eur\n\n")
+      
+        .append("Authorized By: Carmen Quintás, Josep Tarradellas Barcelona-El Prat Airport CEO.\n")
+        .append("Date: ").append(today.toString()).append("\u001B[0m\n");      
         return sb.toString();
     }
 
     @Override
     public String toString() {
-        return String.format(
-            "%s" +
-            "+--------------------+------------------------------+\n" +
-            "| Height             | %-28s |\n" +
-            "| Weight             | %-28s |\n" +
-            "+--------------------+------------------------------+",
+        return String.format("""
+                             %s+--------------------+------------------------------+
+                             | Height             | %-28s |
+                             | Weight             | %-28s |
+                             +--------------------+------------------------------+""",
             super.toString(),
             String.valueOf(height),
             String.valueOf(weight)

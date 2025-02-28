@@ -2,11 +2,11 @@ package model.transportation;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import model.workers.Pilot;
 import model.data.Airport;
 import model.data.FlightStatus;
 import model.data.Operator;
 import model.utils.StringUtils;
+import model.workers.Pilot;
 
 public class Flight {
     private ArrayList<Passenger> passengers;
@@ -102,7 +102,7 @@ public class Flight {
     
     public Flight(Operator operator,Plane plane, Pilot pilot, Airport originAirport, Airport destinationAirport,
             LocalDateTime scheduledDeparture, double flightTime, FlightStatus status, String flightCode) {
-        this.passengers = new ArrayList<>();
+        this.passengers = new ArrayList<Passenger>();
         this.operator = operator;
         this.plane = plane;
         this.pilot = pilot;
@@ -114,6 +114,21 @@ public class Flight {
         this.flightCode = flightCode;
     }
 
+    public Flight(Operator operator,Plane plane, Airport originAirport, Airport destinationAirport,
+            LocalDateTime scheduledDeparture, double flightTime, FlightStatus status, String flightCode) {
+        this.passengers = new ArrayList<Passenger>();
+        this.operator = operator;
+        this.plane = plane;
+        this.pilot = new Pilot("Pilot", "Example", null, null, null, "11111111L", flightCode, flightCode, flightCode, flightTime, null);
+        this.originAirport = originAirport;
+        this.destinationAirport = destinationAirport;
+        this.scheduledDeparture = scheduledDeparture;
+        this.flightTime = flightTime;
+        this.status = status;
+        this.flightCode = flightCode;
+    }
+
+
     public void delayDeparture(int delay) {
         this.scheduledDeparture.plusMinutes(delay);
         this.status = FlightStatus.DELAYED;
@@ -123,13 +138,25 @@ public class Flight {
         String operatorName = StringUtils.capitalizeFirstLetter(this.operator.name());
         String pilotRank = StringUtils.capitalizeFirstLetter(this.pilot.getPilotRank().name());
         StringBuilder sb = new StringBuilder();
-        sb.append("\n\u001B[36m[" + operatorName +  " - FLIGHT REPORT " + this.flightCode + "] \n" + this.originAirport + " (" + this.originAirport.getFullName() + ") - " + this.destinationAirport + " (" + this.destinationAirport.getFullName() + ")\n")
-        .append("Number of passengers present in the flight: " + this.passengers.size()+"\n")
-        .append("Piloted by " + pilotRank + " " + this.pilot.getSurnames() + "," + this.pilot.getName()+"\n")
-        .append("Plane Info:\n Plane code " + this.plane.getPlaneCode() + "\n")
-        .append(" Plane Model: " + this.plane.getModel() + "\n")
-        .append("Route info:\n Origin: " + this.originAirport.getFullName() + "\n Destination: " + this.destinationAirport.getFullName()+"\n")
-        .append(" Flight time: " + this.flightTime + "h ("+(this.flightTime*60)+"min)\u001B[0m");
+        sb.append("\n\u001B[36m[")
+        .append(operatorName).append(" - FLIGHT REPORT ").append(this.flightCode).append("] \n")
+        .append(this.originAirport).append(" (").append(this.originAirport.getFullName()).append(") - ")
+        .append(this.destinationAirport).append(" (").append(this.destinationAirport.getFullName()).append(")\n")
+      
+        .append("Number of passengers present in the flight: ").append(this.passengers.size()).append("\n")
+        .append("Piloted by ").append(pilotRank).append(" ")
+        .append(this.pilot.getSurnames()).append(", ").append(this.pilot.getName()).append("\n\n")
+      
+        .append("Plane Info:\n")
+        .append(" Plane code: ").append(this.plane.getPlaneCode()).append("\n")
+        .append(" Plane Model: ").append(this.plane.getModel()).append("\n\n")
+      
+        .append("Route Info:\n")
+        .append(" Origin: ").append(this.originAirport.getFullName()).append("\n")
+        .append(" Destination: ").append(this.destinationAirport.getFullName()).append("\n")
+      
+        .append(" Flight time: ").append(this.flightTime).append("h (")
+        .append(this.flightTime * 60).append("min)\u001B[0m");      
         return sb.toString();
     }
 
@@ -143,22 +170,22 @@ public class Flight {
 
     @Override
     public String toString() {
-        return String.format(
-            "Flight Details:\n" +
-            "+-----------------------+-----------------------------+\n" +
-            "| Attribute             | Value                       |\n" +
-            "+-----------------------+-----------------------------+\n" +
-            "| Passengers            | %-27s |\n" +
-            "| Operator              | %-27s |\n" +
-            "| Plane                 | %-27s |\n" +
-            "| Pilot                 | %-27s |\n" +
-            "| Origin Airport        | %-27s |\n" +
-            "| Destination Airport   | %-27s |\n" +
-            "| Scheduled Departure   | %-27s |\n" +
-            "| Flight Time           | %-27s |\n" +
-            "| Status                | %-27s |\n" +
-            "| Flight Code           | %-27s |\n" +
-            "+-----------------------+-----------------------------+",
+        return String.format("""
+                             Flight Details:
+                             +-----------------------+-----------------------------+
+                             | Attribute             | Value                       |
+                             +-----------------------+-----------------------------+
+                             | Passengers            | %-27s |
+                             | Operator              | %-27s |
+                             | Plane                 | %-27s |
+                             | Pilot                 | %-27s |
+                             | Origin Airport        | %-27s |
+                             | Destination Airport   | %-27s |
+                             | Scheduled Departure   | %-27s |
+                             | Flight Time           | %-27s |
+                             | Status                | %-27s |
+                             | Flight Code           | %-27s |
+                             +-----------------------+-----------------------------+""",
             String.valueOf(passengers.size()), 
             String.valueOf(operator), 
             String.valueOf(plane.getPlaneCode()), 

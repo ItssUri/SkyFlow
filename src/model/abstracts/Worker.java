@@ -1,7 +1,6 @@
 package model.abstracts;
 
 import java.time.LocalDate;
-
 import model.data.Gender;
 import model.data.Nationality;
 
@@ -42,11 +41,12 @@ public abstract class Worker extends Human {
     }
     @Override
     public String toString() {
-        return String.format(
-            "%s" +
-            "\n| Worker Code        | %-28s |\n" +
-            "| Worked Hours       | %-28s |\n" +
-            "| Salary             | %-28s |\n",
+        return String.format("""
+                             %s
+                             | Worker Code        | %-28s |
+                             | Worked Hours       | %-28s |
+                             | Salary             | %-28s |
+                             """,
             super.toString(),
             String.valueOf(workerCode),
             String.valueOf(workedHours),

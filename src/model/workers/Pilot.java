@@ -55,33 +55,41 @@ public class Pilot extends Worker implements model.interfaces.IsWorker {
         LocalDate today = LocalDate.now();
         StringBuilder sb = new StringBuilder();
         sb.append("\n\u001B[35m[PILOT PAYSHEET]\n")
-        .append("Name: " + getSurnames() +", " + getName()+"\n")
-        .append("Position: Pilot\n")
-        .append("\nWork Details:\n")
-        .append(" Total Hours Worked: " + getWorkedHours() + " hours\n")
-        .append(" Regular Hours: " + standardHours + " hours\n")
-        .append(" vertime Hours: " + overtimeHours + " hours\n")
-        .append("\nEarnings:")
-        .append("\n Base Pay: " + HOURLY_RATE+"eur/hour x " + standardHours + " = "+(HOURLY_RATE*standardHours)+"eur")
-        .append("\n Overtime Pay: (" + HOURLY_RATE+"eur/hour + " + OVERTIME_BONUS + "eur bonus) x" + overtimeHours + " = "+(HOURLY_RATE + OVERTIME_BONUS)*overtimeHours+"eur")
-        .append("\n Gross Pay: " + calculateSalary()+"eur")
-        .append("\n\nDeductions:")
-        .append("\n Income Tax (IRPF, 20%): " + calculateSalary()*0.2+"eur")
-        .append("\n Social Security (6.35%): " + calculateSalary()*0.0635+"eur")
-        .append("\n Total Deduction: " + calculateSalary()*0.2635+"eur")
-        .append("\n\nNet Pay: " + calculateSalary()*0.7365+"eur")
-        .append("\nAuthorized By: Carmen Quintás, Josep Tarradellas Barcelona-El Prat Airport CEO.\n")
-        .append("Date: " + today.toString()+"\n\u001B[0m");
+        .append("Name: ").append(getSurnames()).append(", ").append(getName()).append("\n")
+        .append("Position: Pilot\n\n")
+        
+        .append("Work Details:\n")
+        .append(" Total Hours Worked: ").append(getWorkedHours()).append(" hours\n")
+        .append(" Regular Hours: ").append(standardHours).append(" hours\n")
+        .append(" Overtime Hours: ").append(overtimeHours).append(" hours\n\n")
+        
+        .append("Earnings:\n")
+        .append(" Base Pay: ").append(HOURLY_RATE).append("eur/hour x ").append(standardHours)
+        .append(" = ").append(HOURLY_RATE * standardHours).append("eur\n")
+        .append(" Overtime Pay: (").append(HOURLY_RATE).append("eur/hour + ")
+        .append(OVERTIME_BONUS).append("eur bonus) x ").append(overtimeHours)
+        .append(" = ").append((HOURLY_RATE + OVERTIME_BONUS) * overtimeHours).append("eur\n")
+        .append(" Gross Pay: ").append(calculateSalary()).append("eur\n\n")
+        
+        .append("Deductions:\n")
+        .append(" Income Tax (IRPF, 20%): ").append(calculateSalary() * 0.2).append("eur\n")
+        .append(" Social Security (6.35%): ").append(calculateSalary() * 0.0635).append("eur\n")
+        .append(" Total Deduction: ").append(calculateSalary() * 0.2635).append("eur\n\n")
+        
+        .append("Net Pay: ").append(calculateSalary() * 0.7365).append("eur\n\n")
+        
+        .append("Authorized By: Carmen Quintás, Josep Tarradellas Barcelona-El Prat Airport CEO.\n")
+        .append("Date: ").append(today.toString()).append("\n\u001B[0m");
+
         return sb.toString();
     }
 
     @Override
 public String toString() {
-    return String.format(
-        "%s" + 
-        "+--------------------+------------------------------+\n" +
-        "| Pilot Rank         | %-28s |\n" +
-        "+--------------------+------------------------------+",
+    return String.format("""
+                         %s+--------------------+------------------------------+
+                         | Pilot Rank         | %-28s |
+                         +--------------------+------------------------------+""",
         super.toString(),
         String.valueOf(pilotRank)
     );

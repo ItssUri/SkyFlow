@@ -2,7 +2,6 @@
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-
 import model.data.Gender;
 import model.data.Nationality;
 
@@ -35,7 +34,7 @@ public abstract class Human {
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
-    public Gender isGender() {
+    public Gender getGender() {
         return gender;
     }
     public void setGender(Gender gender) {
@@ -78,20 +77,20 @@ public abstract class Human {
     }
     @Override
     public String toString() {
-        return String.format(
-            "\n" +
-            "+--------------------+------------------------------+\n" +
-            "| Attribute          | Value                        |\n" +
-            "+--------------------+------------------------------+\n" +
-            "| Name               | %-28s |\n" +
-            "| Surnames           | %-28s |\n" +
-            "| Birth Date         | %-28s |\n" +
-            "| Gender             | %-28s |\n" +
-            "| Nationality        | %-28s |\n" +
-            "| ID                 | %-28s |\n" +
-            "| Email              | %-28s |\n" +
-            "| Phone Number       | %-28s |\n" +
-            "+--------------------+------------------------------+",
+        return String.format("""
+                             
+                             +--------------------+------------------------------+
+                             | Attribute          | Value                        |
+                             +--------------------+------------------------------+
+                             | Name               | %-28s |
+                             | Surnames           | %-28s |
+                             | Birth Date         | %-28s |
+                             | Gender             | %-28s |
+                             | Nationality        | %-28s |
+                             | ID                 | %-28s |
+                             | Email              | %-28s |
+                             | Phone Number       | %-28s |
+                             +--------------------+------------------------------+""",
             String.valueOf(name), 
             String.valueOf(surnames), 
             String.valueOf(birthDate.format(DTF)), 
